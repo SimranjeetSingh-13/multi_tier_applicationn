@@ -1,0 +1,44 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: my-gke-demo-app
+description: Pipeline for frontend and backend deployments
+serialPipeline:
+  stages:
+  - targetId: qsdev
+    profiles:
+    - name: frontend-profile
+    - name: backend-profile
+
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: qsdev
+description: Development cluster
+gke:
+  cluster: projects/deploy-project-435500/locations/us-east1/clusters/mycluster
+
+---
+
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipelineProfile
+metadata:
+  name: frontend-profile
+description: Profile for frontend deployment
+spec:
+  render:
+    templatePath: ./frontend/deployment.yml
+    substitutions:
+      IMAGE_PLACEHOLDER: "gauti12/frontend:latest"
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipelineProfile
+metadata:
+  name: backend-profile
+description: Profile for backend deployment
+spec:
+  render:
+    templatePath: ./backend/deployment.yml
+    substitutions:
+      IMAGE_PLACEHOLDER: "gauti12/backend:latest"

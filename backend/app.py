@@ -7,12 +7,19 @@ import csv
 from io import StringIO
 from google.cloud import storage
 from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv()
+
+from config import Config
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
 
-BUCKET_NAME = 'meri-bucket-meri-jaan'
+BUCKET_NAME = 'my_bucket_pro'
 EXPORT_FILE_NAME = 'todos_export.csv'
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './gcp_creds.json'
 

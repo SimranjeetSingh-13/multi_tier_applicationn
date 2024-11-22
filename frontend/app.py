@@ -1,7 +1,9 @@
 import streamlit as st
 import requests
+import os
 
-API_URL = "http://127.0.0.1:5000"
+API_URL = os.getenv("API_URL", "http://backend-service.backend-namespace.svc.cluster.local:5000")
+# API_URL = "http://35.185.18.150:5000"
 st.title("To-Do App")
 
 # Fetch the to-do list
