@@ -1,11 +1,15 @@
 steps:
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', './backend/deployment.yaml']
-  env:
-  - 'CLOUDSDK_COMPUTE_REGION=us-east1-b'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=mycluster'
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', './frontend/deployment.yaml']
-  env:
-  - 'CLOUDSDK_COMPUTE_REGION=us-east1-b'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=mycluster'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['cd backend']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['pwd']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/black-journal-436122-b5/todo-frontend:$SHORT_SHA', '.' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/black-journal-436122-b5/todo-frontend:$SHORT_SHA']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment/frontend', 'todo-frontend=gcr.io/black-journal-436122-b5/todo-frontend:$SHORT_SHA', '--namespace=frontend']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
+# logsBucket: 'gs://todo-app-build-logs'
