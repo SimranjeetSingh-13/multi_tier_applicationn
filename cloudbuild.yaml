@@ -12,4 +12,4 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
-# logsBucket: 'gs://todo-app-build-logs'
+logsBucket: 'gs://my_bucket_pro'
